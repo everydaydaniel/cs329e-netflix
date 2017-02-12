@@ -31,13 +31,50 @@ def create_cache(filename):
 
     return cache
 
-def createPersonal_cache(filename):
-    cache = {}
-    avgRateYear = "cache-movieAverageByYear.pickle"
-    custAvgRateYear = "cache-customerAverageRatingByYear.pickle"
+def createPersonal_cache():
+    # XXX: DONE USING DO NOT RUN ANYMORE
+    """
+    Creates a cache that gets the average rating per customer
+    by year and finds the offest between the total average rating
+    by year.
+    """
+####################
 
-    avgRateYear_dict = create_cache(avgRateYear)
-    custAvgRateYear_dict = create_cache(custAvgRateYear)
+# XXX: for testingonly REMOVE !!!!!!!!!
+    pickle_in = open("cache-customerAverageRatingByYear.pickle","rb")
+    custAvgRateYear_dict = pickle.load(pickle_in)
+    pickle_in.close()
+
+####################
+    #open Average Rating By Year pickle file
+    infile = open("AverageRatingByYear.pickle","rb")
+    avgRateYear_dict = pickle.load(infile)
+    cache = {}
+    # REPLACE
+    # custAvgRateYear = "cache-customerAverageRatingByYear.pickle"
+    # custAvgRateYear_dict = create_cache(custAvgRateYear)
+    count = 0
+    for key in custAvgRateYear_dict:
+        count += 1
+        cache_key = key
+        val = avgRateYear_dict[cache_key[1]]
+        print(key, val)
+
+        try:
+            custAverage = custAvgRateYear_dict[key]
+            yearAverage = avgRateYear_dict[key[1]]
+            cache[key] = custAverage - yearAverage#customer yearly - yearly average
+
+        except Exception as e:
+            print("Failed", e)
+    pickle_out = open("CustomerOffsetByYear.pickle","wb")
+    pickle.dump(cache, pickle_out)
+    pickle_out.close()
+
+
+
+
+
 
 
 
