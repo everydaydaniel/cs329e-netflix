@@ -10,11 +10,12 @@ from requests import get
 from os import path
 from numpy import sqrt, square, mean, subtract
 
-'''
+
 def create_cache(filename):
     """
     filename is the name of the cache file to load
-    returns a dictionary after loading the file or pulling the file from the public_html page
+    returns a dictionary after loading the file or
+    pulling the file from the public_html page
     """
     cache = {}
     filePath = "/u/fares/public_html/netflix-caches/" + filename
@@ -30,6 +31,16 @@ def create_cache(filename):
 
     return cache
 
+def createPersonal_cache(filename):
+    cache = {}
+    avgRateYear = "cache-movieAverageByYear.pickle"
+    custAvgRateYear = "cache-customerAverageRatingByYear.pickle"
+
+    avgRateYear_dict = create_cache(avgRateYear)
+    custAvgRateYear_dict = create_cache(custAvgRateYear)
+
+
+
 
 AVERAGE_RATING = 3.60428996442
 ACTUAL_CUSTOMER_RATING = create_cache(
@@ -39,11 +50,12 @@ AVERAGE_MOVIE_RATING_PER_YEAR = create_cache(
 YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
 CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
     "cache-customerAverageRatingByYear.pickle")
-'''
+
 
 actual_scores_cache ={10040: {2417853: 1, 1207062: 2, 2487973: 3}}
 movie_year_cache = {10040: 1990}
 decade_avg_cache = {1990: 2.4}
+
 
 # ------------
 # netflix_eval
@@ -75,4 +87,4 @@ def netflix_eval(reader, writer) :
             writer.write('\n')
     # calculate rmse for predications and actuals
     rmse = sqrt(mean(square(subtract(predictions, actual))))
-    writer.write(str(rmse)[:4] + '\n')
+    writer.write("RMSE: " + str(rmse)[:4] + '\n')
