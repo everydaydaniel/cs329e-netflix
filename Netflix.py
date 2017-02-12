@@ -71,6 +71,16 @@ def createPersonal_cache():
     pickle.dump(cache, pickle_out)
     pickle_out.close()
 
+def getPersonal_cache():
+    """
+    USE THIS TO CREATE THE CACHE CUSTOMMER OFFSET CACHE
+    Deserializes Customer Offset cache
+    """
+    infile = open("CustomerOffsetByYear.pickle","rb")
+    cache = pickle.load(infile)
+    infile.close()
+    return cache
+
 
 
 
