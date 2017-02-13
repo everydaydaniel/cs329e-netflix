@@ -10,11 +10,12 @@ from requests import get
 from os import path
 from numpy import sqrt, square, mean, subtract
 
-'''
+
 def create_cache(filename):
     """
     filename is the name of the cache file to load
-    returns a dictionary after loading the file or pulling the file from the public_html page
+    returns a dictionary after loading the file or
+    pulling the file from the public_html page
     """
     cache = {}
     filePath = "/u/fares/public_html/netflix-caches/" + filename
@@ -30,20 +31,78 @@ def create_cache(filename):
 
     return cache
 
+def createPersonal_cache():
+    # XXX: DONE USING DO NOT RUN ANYMORE
+    """
+    Creates a cache that gets the average rating per customer
+    by year and finds the offest between the total average rating
+    by year.
+    """
+####################
+
+# XXX: for testingonly REMOVE !!!!!!!!!
+    pickle_in = open("cache-customerAverageRatingByYear.pickle","rb")
+    custAvgRateYear_dict = pickle.load(pickle_in)
+    pickle_in.close()
+
+####################
+    #open Average Rating By Year pickle file
+    infile = open("AverageRatingByYear.pickle","rb")
+    avgRateYear_dict = pickle.load(infile)
+    cache = {}
+    # REPLACE
+    # custAvgRateYear = "cache-customerAverageRatingByYear.pickle"
+    # custAvgRateYear_dict = create_cache(custAvgRateYear)
+    count = 0
+    for key in custAvgRateYear_dict:
+        count += 1
+        cache_key = key
+        val = avgRateYear_dict[cache_key[1]]
+        print(key, val)
+
+        try:
+            custAverage = custAvgRateYear_dict[key]
+            yearAverage = avgRateYear_dict[key[1]]
+            cache[key] = custAverage - yearAverage#customer yearly - yearly average
+
+        except Exception as e:
+            print("Failed", e)
+    pickle_out = open("CustomerOffsetByYear.pickle","wb")
+    pickle.dump(cache, pickle_out)
+    pickle_out.close()
+
+def getPersonal_cache():
+    """
+    USE THIS TO CREATE THE CACHE CUSTOMMER OFFSET CACHE
+    Deserializes Customer Offset cache
+    """
+    infile = open("CustomerOffsetByYear.pickle","rb")
+    cache = pickle.load(infile)
+    infile.close()
+    return cache
+
+
+
+
+
+
+
+
 
 AVERAGE_RATING = 3.60428996442
-ACTUAL_CUSTOMER_RATING = create_cache(
-    "cache-actualCustomerRating.pickle")
-AVERAGE_MOVIE_RATING_PER_YEAR = create_cache(
-    "cache-movieAverageByYear.pickle")
-YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
-CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
-    "cache-customerAverageRatingByYear.pickle")
-'''
+# ACTUAL_CUSTOMER_RATING = create_cache(
+#     "cache-actualCustomerRating.pickle")
+# AVERAGE_MOVIE_RATING_PER_YEAR = create_cache(
+#     "cache-movieAverageByYear.pickle")
+# YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
+# CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
+#     "cache-customerAverageRatingByYear.pickle")
+
 
 actual_scores_cache ={10040: {2417853: 1, 1207062: 2, 2487973: 3}}
 movie_year_cache = {10040: 1990}
 decade_avg_cache = {1990: 2.4}
+
 
 # ------------
 # netflix_eval
@@ -75,4 +134,4 @@ def netflix_eval(reader, writer) :
             writer.write('\n')
     # calculate rmse for predications and actuals
     rmse = sqrt(mean(square(subtract(predictions, actual))))
-    writer.write(str(rmse)[:4] + '\n')
+    writer.write("RMSE: " + str(rmse)[:4] + '\n')
