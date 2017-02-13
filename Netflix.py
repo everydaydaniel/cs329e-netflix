@@ -90,13 +90,13 @@ def getPersonal_cache():
 
 
 AVERAGE_RATING = 3.60428996442
-ACTUAL_CUSTOMER_RATING = create_cache(
-    "cache-actualCustomerRating.pickle")
-AVERAGE_MOVIE_RATING_PER_YEAR = create_cache(
-    "cache-movieAverageByYear.pickle")
-YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
-CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
-    "cache-customerAverageRatingByYear.pickle")
+# ACTUAL_CUSTOMER_RATING = create_cache(
+#     "cache-actualCustomerRating.pickle")
+# AVERAGE_MOVIE_RATING_PER_YEAR = create_cache(
+#     "cache-movieAverageByYear.pickle")
+# YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
+# CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
+#     "cache-customerAverageRatingByYear.pickle")
 
 
 actual_scores_cache ={10040: {2417853: 1, 1207062: 2, 2487973: 3}}
