@@ -28,7 +28,17 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-netflix_eval"><strong>netflix_eval</strong></a>(reader, writer)</dt></dl>
+<td width="100%"><dl><dt><a name="-createPersonal_cache"><strong>createPersonal_cache</strong></a>()</dt><dd><tt>Creates&nbsp;a&nbsp;cache&nbsp;that&nbsp;gets&nbsp;the&nbsp;average&nbsp;rating&nbsp;per&nbsp;customer<br>
+by&nbsp;year&nbsp;and&nbsp;finds&nbsp;the&nbsp;offest&nbsp;between&nbsp;the&nbsp;total&nbsp;average&nbsp;rating<br>
+by&nbsp;year.</tt></dd></dl>
+ <dl><dt><a name="-create_cache"><strong>create_cache</strong></a>(filename)</dt><dd><tt>filename&nbsp;is&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;cache&nbsp;file&nbsp;to&nbsp;load<br>
+returns&nbsp;a&nbsp;dictionary&nbsp;after&nbsp;loading&nbsp;the&nbsp;file&nbsp;or<br>
+pulling&nbsp;the&nbsp;file&nbsp;from&nbsp;the&nbsp;public_html&nbsp;page</tt></dd></dl>
+ <dl><dt><a name="-getPersonal_cache"><strong>getPersonal_cache</strong></a>(num)</dt><dd><tt>USE&nbsp;THIS&nbsp;TO&nbsp;CREATE&nbsp;THE&nbsp;CACHE&nbsp;CUSTOMMER&nbsp;OFFSET&nbsp;CACHE<br>
+Deserializes&nbsp;Customer&nbsp;Offset&nbsp;cache<br>
+cache&nbsp;Schema:&nbsp;{(customerID,Year):&nbsp;OFFSET&nbsp;}<br>
+returns&nbsp;as&nbsp;&nbsp;:&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Tuple)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;float&nbsp;&nbsp;}</tt></dd></dl>
+ <dl><dt><a name="-netflix_eval"><strong>netflix_eval</strong></a>(reader, writer)</dt></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
@@ -36,7 +46,8 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>actual_scores_cache</strong> = {10040: {1207062: 2, 2417853: 1, 2487973: 3}}<br>
+<td width="100%"><strong>AVERAGE_RATING</strong> = 3.60428996442<br>
+<strong>actual_scores_cache</strong> = {10040: {1207062: 2, 2417853: 1, 2487973: 3}}<br>
 <strong>decade_avg_cache</strong> = {1990: 2.4}<br>
 <strong>movie_year_cache</strong> = {10040: 1990}<br>
 <strong>sqrt</strong> = &lt;ufunc 'sqrt'&gt;<br>

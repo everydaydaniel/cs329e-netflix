@@ -128,7 +128,7 @@ def netflix_eval(reader, writer) :
         line = line.strip()
         # check if the line ends with a ":", i.e., it's a movie title
         if line[-1] == ':':
-		# It's a movie
+    	# It's a movie
             current_movie = line.rstrip(':')
             pred = movie_year_cache[int(current_movie)]
             pred = (pred // 10) *10
@@ -136,7 +136,7 @@ def netflix_eval(reader, writer) :
             writer.write(line)
             writer.write('\n')
         else:
-		# It's a customer
+    	# It's a customer
             current_customer = line
             predictions.append(prediction)
             actual.append(actual_scores_cache[int(current_movie)][int(current_customer)])
