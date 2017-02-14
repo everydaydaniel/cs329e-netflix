@@ -82,15 +82,13 @@ def getPersonal_cache(num):
     returns as  : {     (Tuple)     : float  }
     """
     avaliable_files = ["CombinedAveragePerYear.pickle","CustomerOffsetByYear.pickle", "kzk66-movies_and_years.pickle"]
-    
+
     num = int(num)
     inputFile = avaliable_files[num]
     infile = open(inputFile ,"rb")
     cache = pickle.load(infile)
     infile.close()
     return cache
-cache = getPersonal_cache()
-print(len(cache))
 
 
 
