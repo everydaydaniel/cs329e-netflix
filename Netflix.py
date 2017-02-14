@@ -32,47 +32,49 @@ def create_cache(filename):
     return cache
 
 def createPersonal_cache():
-    # XXX: DONE USING DO NOT RUN ANYMORE
+
     """
     Creates a cache that gets the average rating per customer
-    by year and finds the offest between the total average rating
-    by year.
+    by year and the total average rating for that year and takes the average.
+    The returned dictionary values are...
+    { (customer_ID,year) : combined_Average }
+
     """
-####################
+    # TODO: create a cache that has a customers combined average by year
+    #Average customer rating
+    #(int(customer_ID):float(average_rating))
+    infile_1 = open("cache-averageCustomerRating.pickle","rb")
 
-# XXX: for testingonly REMOVE !!!!!!!!!
-    pickle_in = open("cache-customerAverageRatingByYear.pickle","rb")
-    custAvgRateYear_dict = pickle.load(pickle_in)
-    pickle_in.close()
+    #(int(movie_id) : string(year))
+    infile_2 = open("kzk66-movies_and_years.pickle","rb")
 
-####################
-    #open Average Rating By Year pickle file
-    infile = open("AverageRatingByYear.pickle","rb")
-    avgRateYear_dict = pickle.load(infile)
-    cache = {}
-    # REPLACE
-    # custAvgRateYear = "cache-customerAverageRatingByYear.pickle"
-    # custAvgRateYear_dict = create_cache(custAvgRateYear)
-    count = 0
-    for key in custAvgRateYear_dict:
-        count += 1
-        cache_key = key
-        val = avgRateYear_dict[cache_key[1]]
-        #print(key, val)
+    #(string(year):float(averageRatingForThatYear))
+    infile_3 = open("kzk66-year_rating_avg.pickle","rb")
 
-        try:
-            custAverage = custAvgRateYear_dict[key]
-            yearAverage = avgRateYear_dict[key[1]]
-            cache[key] = (custAverage + yearAverage) / 2
-            #old code == custAverage - yearAverage
-            #customer yearly - yearly average
+    #((customer_ID,year) : rating)
+    infile_4 = open("cache-customerAverageRatingByYear.pickle","rb")
 
-        except Exception as e:
-            print("Failed", e)
-    pickle_out = open("CombinedAveragePerYear.pickle","wb")
-    pickle.dump(cache, pickle_out)
-    pickle_out.close()
+    AverageCustRating = pickle.load(infile_1)
+    MovieToYear = pickle.load(infile_2)
+    AverageRateForYear = pickle.load(infile_3)
+    CustomerAvergeForYear = pickle.load(infile_4)
+    infile_1.close()
+    infile_2.close()
+    infile_3.close()
+    infile_4.close()
+    #designated chache to populate
+    combinedAverage = {}
 
+
+    for key, value in CustomerAvergeForYear.items():
+        #Key = (customer_ID,Year)
+        year = key[1]
+        TotalAvgForYear = AverageRateForYear[str(year)]
+        combinedAvg = round((value + TotalAvgForYear) / 2,6)
+        combinedAverage[key] = combinedAvg
+    outfile = open("CombinedCustomerAverageByYear.pickle","wb")
+    pickle.dump(combinedAverage,outfile)
+    outfile.close()
 
 def getPersonal_cache(num):
     """
@@ -81,7 +83,9 @@ def getPersonal_cache(num):
     cache Schema: {(customerID,Year): OFFSET }
     returns as  : {     (Tuple)     : float  }
     """
-    avaliable_files = ["CombinedAveragePerYear.pickle","CustomerOffsetByYear.pickle", "kzk66-movies_and_years.pickle"]
+    avaliable_files = ["CombinedCustomerAverageByYear.pickle","kzk66-year_rating_avg.pickle",
+                        "kzk66-movies_and_years.pickle","kzk66-year_rating_avg.pickle",
+                        "cache-actualCustomerRating.pickle" ]
 
     num = int(num)
     inputFile = avaliable_files[num]
@@ -90,28 +94,14 @@ def getPersonal_cache(num):
     infile.close()
     return cache
 
-
-
-
-
-
-
-
-
-
 AVERAGE_RATING = 3.60428996442
-# ACTUAL_CUSTOMER_RATING = create_cache(
-#     "cache-actualCustomerRating.pickle")
-# AVERAGE_MOVIE_RATING_PER_YEAR = create_cache(
-#     "cache-movieAverageByYear.pickle")
-# YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
-# CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
-#     "cache-customerAverageRatingByYear.pickle")
 
-
-actual_scores_cache ={10040: {2417853: 1, 1207062: 2, 2487973: 3}}
-movie_year_cache = {10040: 1990}
-decade_avg_cache = {1990: 2.4}
+#Initialize Caches
+CombinedAveragePerYear = getPersonal_cache(0)
+id_and_year = getPersonal_cache(2)
+actual_scores_cache = getPersonal_cache(4) #(customerID,movie_id:rate)
+print(len(CombinedAveragePerYear))
+print(len(actual_scores_cache))
 
 
 # ------------
@@ -123,25 +113,32 @@ def netflix_eval(reader, writer) :
     actual = []
 
     # iterate throught the file reader line by line
+    movie_year = 0
+    movie_id = 0
     for line in reader:
-    # need to get rid of the '\n' by the end of the line
-        line = line.strip()
-        # check if the line ends with a ":", i.e., it's a movie title
-        if line[-1] == ':':
-    	# It's a movie
-            current_movie = line.rstrip(':')
-            pred = movie_year_cache[int(current_movie)]
-            pred = (pred // 10) *10
-            prediction = decade_avg_cache[pred]
-            writer.write(line)
-            writer.write('\n')
-        else:
-    	# It's a customer
-            current_customer = line
-            predictions.append(prediction)
-            actual.append(actual_scores_cache[int(current_movie)][int(current_customer)])
-            writer.write(str(prediction))
-            writer.write('\n')
+        try:
+        # need to get rid of the '\n' by the end of the line
+            line = line.strip()
+            # check if the line ends with a ":", i.e., it's a movie title
+            if line[-1] == ':':
+        	# It's a movie
+                current_movie = line.rstrip(':')
+                movie_id = int(current_movie)
+                movie_year = int(id_and_year[movie_id])
+                writer.write(line)
+                writer.write('\n')
+            else:
+        	# It's a customer
+                current_customer = int(line)
+                prediction = CombinedAveragePerYear[(current_customer,movie_year)]
+                print(prediction)
+                predictions.append(prediction)
+                actual.append(actual_scores_cache[(current_customer, movie_id)])
+                writer.write(str(prediction))
+                writer.write('\n')
+        except KeyError as e:
+            print(e)
+            break
     # calculate rmse for predications and actuals
     rmse = sqrt(mean(square(subtract(predictions, actual))))
     writer.write("RMSE: " + str(rmse)[:4] + '\n')
