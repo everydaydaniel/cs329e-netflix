@@ -58,28 +58,38 @@ def createPersonal_cache():
         count += 1
         cache_key = key
         val = avgRateYear_dict[cache_key[1]]
-        print(key, val)
+        #print(key, val)
 
         try:
             custAverage = custAvgRateYear_dict[key]
             yearAverage = avgRateYear_dict[key[1]]
-            cache[key] = custAverage - yearAverage#customer yearly - yearly average
+            cache[key] = (custAverage + yearAverage) / 2
+            #old code == custAverage - yearAverage
+            #customer yearly - yearly average
 
         except Exception as e:
             print("Failed", e)
-    pickle_out = open("CustomerOffsetByYear.pickle","wb")
+    pickle_out = open("CombinedAveragePerYear.pickle","wb")
     pickle.dump(cache, pickle_out)
     pickle_out.close()
 
-def getPersonal_cache():
+
+def getPersonal_cache(num):
     """
     USE THIS TO CREATE THE CACHE CUSTOMMER OFFSET CACHE
     Deserializes Customer Offset cache
+    cache Schema: {(customerID,Year): OFFSET }
+    returns as  : {     (Tuple)     : float  }
     """
-    infile = open("CustomerOffsetByYear.pickle","rb")
+    avaliable_files = ["CombinedAveragePerYear.pickle","CustomerOffsetByYear.pickle", "kzk66-movies_and_years.pickle"]
+
+    num = int(num)
+    inputFile = avaliable_files[num]
+    infile = open(inputFile ,"rb")
     cache = pickle.load(infile)
     infile.close()
     return cache
+
 
 
 
@@ -118,7 +128,7 @@ def netflix_eval(reader, writer) :
         line = line.strip()
         # check if the line ends with a ":", i.e., it's a movie title
         if line[-1] == ':':
-		# It's a movie
+    	# It's a movie
             current_movie = line.rstrip(':')
             pred = movie_year_cache[int(current_movie)]
             pred = (pred // 10) *10
@@ -126,7 +136,7 @@ def netflix_eval(reader, writer) :
             writer.write(line)
             writer.write('\n')
         else:
-		# It's a customer
+    	# It's a customer
             current_customer = line
             predictions.append(prediction)
             actual.append(actual_scores_cache[int(current_movie)][int(current_customer)])
