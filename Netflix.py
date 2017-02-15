@@ -117,10 +117,8 @@ YearOfMovie = getPersonal_cache(2)
 # ------------
 def netflix_eval(reader, writer) :
     """
-    USE THIS TO CREATE THE CACHE CUSTOMMER OFFSET CACHE
-    Deserializes Customer Offset cache
-    cache Schema: {(customerID,Year): OFFSET }
-    returns as  : {     (Tuple)     : float  }
+    This function will produce predictions. At the end it
+    will compare the prediction values with the actual values. 
     """
     predictions = []
     actual = []
