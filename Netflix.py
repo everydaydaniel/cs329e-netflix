@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-
+# This program wil try to predict user ratings by taking in Caches
+# that have movie averages and customer offsets by year.
 # -------
 # imports
 # -------
@@ -115,6 +116,12 @@ YearOfMovie = getPersonal_cache(2)
 # netflix_eval
 # ------------
 def netflix_eval(reader, writer) :
+    """
+    USE THIS TO CREATE THE CACHE CUSTOMMER OFFSET CACHE
+    Deserializes Customer Offset cache
+    cache Schema: {(customerID,Year): OFFSET }
+    returns as  : {     (Tuple)     : float  }
+    """
     predictions = []
     actual = []
 
