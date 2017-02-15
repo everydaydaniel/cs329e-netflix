@@ -29,8 +29,9 @@
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt><a name="-createPersonal_cache"><strong>createPersonal_cache</strong></a>()</dt><dd><tt>Creates&nbsp;a&nbsp;cache&nbsp;that&nbsp;gets&nbsp;the&nbsp;average&nbsp;rating&nbsp;per&nbsp;customer<br>
-by&nbsp;year&nbsp;and&nbsp;finds&nbsp;the&nbsp;offest&nbsp;between&nbsp;the&nbsp;total&nbsp;average&nbsp;rating<br>
-by&nbsp;year.</tt></dd></dl>
+by&nbsp;year&nbsp;and&nbsp;the&nbsp;total&nbsp;average&nbsp;rating&nbsp;for&nbsp;that&nbsp;year&nbsp;and&nbsp;takes&nbsp;the&nbsp;average.<br>
+The&nbsp;returned&nbsp;dictionary&nbsp;values&nbsp;are...<br>
+{&nbsp;(customer_ID,year)&nbsp;:&nbsp;combined_Average&nbsp;}</tt></dd></dl>
  <dl><dt><a name="-create_cache"><strong>create_cache</strong></a>(filename)</dt><dd><tt>filename&nbsp;is&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;cache&nbsp;file&nbsp;to&nbsp;load<br>
 returns&nbsp;a&nbsp;dictionary&nbsp;after&nbsp;loading&nbsp;the&nbsp;file&nbsp;or<br>
 pulling&nbsp;the&nbsp;file&nbsp;from&nbsp;the&nbsp;public_html&nbsp;page</tt></dd></dl>
@@ -38,7 +39,9 @@ pulling&nbsp;the&nbsp;file&nbsp;from&nbsp;the&nbsp;public_html&nbsp;page</tt></d
 Deserializes&nbsp;Customer&nbsp;Offset&nbsp;cache<br>
 cache&nbsp;Schema:&nbsp;{(customerID,Year):&nbsp;OFFSET&nbsp;}<br>
 returns&nbsp;as&nbsp;&nbsp;:&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Tuple)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;float&nbsp;&nbsp;}</tt></dd></dl>
- <dl><dt><a name="-netflix_eval"><strong>netflix_eval</strong></a>(reader, writer)</dt></dl>
+ <dl><dt><a name="-netflix_eval"><strong>netflix_eval</strong></a>(reader, writer)</dt><dd><tt>#&nbsp;------------<br>
+#&nbsp;netflix_eval<br>
+#&nbsp;------------</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
@@ -47,9 +50,10 @@ returns&nbsp;as&nbsp;&nbsp;:&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Tuple)&nbsp;&n
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><strong>AVERAGE_RATING</strong> = 3.60428996442<br>
-<strong>actual_scores_cache</strong> = {10040: {1207062: 2, 2417853: 1, 2487973: 3}}<br>
-<strong>decade_avg_cache</strong> = {1990: 2.4}<br>
-<strong>movie_year_cache</strong> = {10040: 1990}<br>
+<strong>YearOfMovie</strong> = {1: '2003', 2: '2004', 3: '1997', 4: '1994', 5: '2004', 6: '1997', 7: '1992', 8: '2004', 9: '1991', 10: '2001', ...}<br>
+<strong>actual_scores_cache</strong> = {(6, 501): 3, (6, 658): 3, (6, 825): 3, (7, 285): 5, (7, 6408): 5, (7, 8393): 3, (7, 9217): 5, (7, 14759): 3, (8, 1144): 4, (8, 1202): 5, ...}<br>
+<strong>customerAverageOffset</strong> = {6: -0.8475750626215306, 7: 0.6168154230070365, 8: 0.533961141531549, 10: -0.1377066629776711, 25: 0.6904925502211023, 33: -0.3805297411999162, 42: 0.27441543103082583, 59: 1.024684708887188, 79: -0.3967114676424366, 83: 0.19269769463478403, ...}<br>
+<strong>movieAverageRating</strong> = {1: 3.75, 2: 3.559, 3: 3.641, 4: 2.739, 5: 3.919, 6: 3.084, 7: 2.129, 8: 3.19, 9: 2.621, 10: 3.181, ...}<br>
 <strong>sqrt</strong> = &lt;ufunc 'sqrt'&gt;<br>
 <strong>square</strong> = &lt;ufunc 'square'&gt;<br>
 <strong>subtract</strong> = &lt;ufunc 'subtract'&gt;</td></tr></table>
